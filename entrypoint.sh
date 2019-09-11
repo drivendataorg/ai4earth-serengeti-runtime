@@ -1,5 +1,5 @@
 #!/bin/bash
-set -vex
+set -ex
 
 processor="gpu"
 
@@ -15,26 +15,25 @@ processor="gpu"
         processor="cpu"
     fi
 
-    echo "Unpacking submission ($SUBMISSION_ID) for $COMPETITION_OWNER"
-    echo "TaskID: $TASK_ID"
+    echo "Unpacking submission..."
     unzip ./submission/submission.zip -d .
 
     if [ -f "main.py" ]
     then
         source activate py-$processor
-        echo "Running submission ($SUBMISSION_ID) in Python for $COMPETITION_OWNER"
+        echo "Running submission with Python "
         python main.py
     elif [ -f "main.R" ]
     then
         source activate r-$processor
-        echo "Running submission ($SUBMISSION_ID) in R for $COMPETITION_OWNER"
+        echo "Running submission with R"
         R -f main.R
     else
-        echo "Could not find main.py or main.R in submission ($SUBMISSION_ID) for $COMPETITION_OWNER"
+        echo "ERROR: Could not find main.py or main.R in submission.zip"
         exit 1
     fi
 
-    echo "Exporting submission ($SUBMISSION_ID) result for $COMPETITION_OWNER"
+    echo "Exporting submission.csv result..."
 
     # Valid scripts must create a "submission.csv" file within the same directory as main
     if [ -f "submission.csv" ]
@@ -46,7 +45,7 @@ processor="gpu"
         exit 1
     fi
 
-    echo "Completed submission ($SUBMISSION_ID) for $COMPETITION_OWNER"
+    echo "Completed execution."
     exit 0
 } |& tee "/inference/submission/log.txt"
 

@@ -14,21 +14,6 @@ library(devtools)
 install.packages("opencv")
 install.packages("OpenImageR")
 
-install_github("bnosac/image", subdir = "image.CornerDetectionF9", build_vignettes = F)
-install_github("bnosac/image", subdir = "image.CornerDetectionHarris", build_vignettes = F)
-install_github("bnosac/image", subdir = "image.LineSegmentDetector", build_vignettes = F)
 install_github("bnosac/image", subdir = "image.ContourDetector", build_vignettes = F)
-install_github("bnosac/image", subdir = "image.Otsu", build_vignettes = F)
-install_github("bnosac/image", subdir = "image.dlib", build_vignettes = F)
 install_github("bnosac/image", subdir = "image.darknet", build_vignettes = F)
-install_github("bnosac/image", subdir = "image.DenoiseNLMeans", build_vignettes = F)
-install_github("bnosac/image", subdir = "image.libfacedetection", build_vignettes = F)
 install_github("bnosac/image", subdir = "image.OpenPano", build_vignettes = F)
-
-# ============ DEEP LEARNING ============ 
-library(tensorflow)
-install_tensorflow(method="conda", envname="r-cpu", version="1.14.0")
-
-library(keras)
-use_condaenv("r-cpu")
-install_keras(method="conda", tensorflow="1.14.0")
