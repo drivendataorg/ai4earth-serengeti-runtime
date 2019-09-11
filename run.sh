@@ -13,7 +13,7 @@ cd inference; zip -r ../submission/submission.zip ./*; cd ..
 
 
 # test configuration
-if [ $(nvidia-smi 2> /dev/null) ]
+if [ $(which nvidia-smi) ]
 then
     docker run --env-file .env \
            --gpus all \

@@ -26,7 +26,7 @@ RUN conda env create -f /envs/r-gpu.yml
 
 # post-environment installs for R
 COPY ./package_installs*.R /envs/
-RUN apt-get install libglu1-mesa
+RUN apt-get update && apt-get install libglu1-mesa -y
 RUN /opt/conda/envs/r-cpu/bin/R -f /envs/package_installs_cpu.R
 RUN /opt/conda/envs/r-gpu/bin/R -f /envs/package_installs_gpu.R
 

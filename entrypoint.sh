@@ -7,7 +7,7 @@ processor="gpu"
     cd /inference
 
     # check for gpu with nvidia-smi
-    if [ $(nvidia-smi 2> /dev/null) ]
+    if [ $(which nvidia-smi) ]
     then
         :
     else
