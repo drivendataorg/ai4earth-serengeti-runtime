@@ -1,4 +1,3 @@
-# FROM nvidia/cuda:10.1-cudnn7-runtime-ubuntu18.04
 FROM nvidia/cuda:10.1-base-ubuntu18.04
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
@@ -21,7 +20,6 @@ COPY *.yml /envs/
 
 # base environments
 ENV PATH /opt/conda/bin:$PATH
-# RUN conda update -n base -c defaults conda
 
 # create environments
 RUN conda env create -f /envs/py-gpu.yml && \
