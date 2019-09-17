@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 
 processor="gpu"
 
@@ -21,7 +21,7 @@ processor="gpu"
     if [ -f "main.py" ]
     then
         source activate py-$processor
-        echo "Running submission with Python "
+        echo "Running submission with Python"
         python main.py
     elif [ -f "main.R" ]
     then
