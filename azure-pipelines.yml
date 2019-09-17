@@ -7,7 +7,7 @@ trigger:
 - master
 
 jobs:
-- job: Build Runtime Container
+- job: build_runtime_container
   pool:
     vmImage: 'ubuntu-latest'
   variables:
