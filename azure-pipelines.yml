@@ -12,6 +12,9 @@ variables:
   dockerId: ai4edrivendata
   imageName: inference
 
+timeoutInMinutes: 360
+cancelTimeoutInMinutes: 90
+
 steps:
 - script: |
     docker build -t $(dockerId).azurecr.io/$(imageName) .
