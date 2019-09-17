@@ -6,16 +6,15 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
-variables:
-  dockerId: ai4edrivendata
-  imageName: inference
-
 jobs:
-- job: Build Runtime Docker Container
-  timeoutInMinutes: 360
-  cancelTimeoutInMinutes: 90
+- job: Build Runtime Container
+  pool:
+    vmImage: 'ubuntu-latest'
+  variables:
+    dockerId: ai4edrivendata
+    imageName: inference
+  timeoutInMinutes: 360
+  cancelTimeoutInMinutes: 90
   steps:
   - script: |
       docker build -t $(dockerId).azurecr.io/$(imageName) .
