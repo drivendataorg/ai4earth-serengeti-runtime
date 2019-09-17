@@ -12,13 +12,14 @@ variables:
   dockerId: ai4edrivendata
   imageName: inference
 
-timeoutInMinutes: 360
-cancelTimeoutInMinutes: 90
-
-steps:
-- script: |
-    docker build -t $(dockerId).azurecr.io/$(imageName) .
-    docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
-    docker push $(dockerId).azurecr.io/$(imageName)
-  env:
-    pswd: $(dockerPassword)        
+jobs:
+- job: Build Runtime Docker Container
+  timeoutInMinutes: 360
+  cancelTimeoutInMinutes: 90
+  steps:
+  - script: |
+      docker build -t $(dockerId).azurecr.io/$(imageName) .
+      docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
+      docker push $(dockerId).azurecr.io/$(imageName)
+    env:
+      pswd: $(dockerPassword)        
