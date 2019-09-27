@@ -38,5 +38,15 @@ COPY ./entrypoint.sh /inference/entrypoint.sh
 WORKDIR /inference
 RUN chmod +x ./entrypoint.sh
 
+RUN groupadd -g 999 appuser && \
+    useradd -r -u 1000 -g appuser appuser
+
+# user access to relevant directories
+RUN chown -R appuser /inference
+RUN chown -R appuser /opt
+RUN chown -R appuser /envs
+
+USER appuser
+
 # Execute the entrypoint.sh script inside the container when we do docker run
 CMD ["/bin/bash", "/inference/entrypoint.sh"]
