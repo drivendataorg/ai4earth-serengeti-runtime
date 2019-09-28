@@ -7,13 +7,13 @@ r = getOption("repos")
 r["CRAN"] = "https://cloud.r-project.org/"
 options(repos = r)
 
-install.packages("devtools")
+install.packages("devtools", quiet = T)
 library(devtools)
 
 # ============ IMAGE LIBRARIES ============ 
-install.packages("opencv")
-install.packages("OpenImageR")
+install.packages("opencv", quiet = T)
+install.packages("OpenImageR", quiet = T)
 
-install_github("bnosac/image", subdir = "image.ContourDetector", build_vignettes = F)
-install_github("bnosac/image", subdir = "image.darknet", build_vignettes = F)
-install_github("bnosac/image", subdir = "image.OpenPano", build_vignettes = F)
+install_github("bnosac/image", subdir = "image.ContourDetector", build_vignettes = F, quiet = T)
+install_github("bnosac/image", subdir = "image.darknet", build_vignettes = F, quiet = T)
+install_github("bnosac/image", subdir = "image.OpenPano", build_vignettes = F, quiet = T)
