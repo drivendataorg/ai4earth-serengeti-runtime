@@ -18,6 +18,9 @@ RUN groupadd -g 999 appuser && \
 RUN mkdir /envs /home/appuser /inference
 RUN chown -R appuser /opt /envs /home/appuser /inference
 
+COPY ./entrypoint.sh /inference/entrypoint.sh
+RUN chmod +x /inference/entrypoint.sh
+
 USER appuser
 
 # install miniconda as system python
@@ -34,11 +37,7 @@ RUN conda env create -f /envs/py-${CPU_GPU}.yml && \
 
 # post-environment installs for R
 COPY ./package_installs*.R /envs/
-RUN /opt/conda/envs/r-cpu/bin/R -f /envs/package_installs_${CPU_GPU}.R
-
-COPY ./entrypoint.sh /inference/entrypoint.sh
-WORKDIR /inference
-RUN chmod +x ./entrypoint.sh
+RUN /opt/conda/envs/r-${CPU_GPU}/bin/R -f /envs/package_installs_${CPU_GPU}.R
 
 # Execute the entrypoint.sh script inside the container when we do docker run
 CMD ["/bin/bash", "/inference/entrypoint.sh"]
