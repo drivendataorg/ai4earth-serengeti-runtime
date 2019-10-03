@@ -21,6 +21,9 @@ RUN chown -R appuser /opt /envs /home/appuser /inference
 COPY ./entrypoint.sh /inference/entrypoint.sh
 RUN chmod +x /inference/entrypoint.sh
 
+COPY ./run-tests.sh /inference/run-tests.sh
+RUN chmod +x /inference/entrypoint.sh
+
 USER appuser
 
 # install miniconda as system python
