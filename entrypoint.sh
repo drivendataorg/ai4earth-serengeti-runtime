@@ -16,7 +16,7 @@ exit_code=0
     fi
 
     echo "Unpacking submission..."
-    unzip ./submission/submission.zip -d .
+    unzip ./submission/submission.zip -d ./
 
     if [ -f "main.py" ]
     then
