@@ -2,12 +2,9 @@
 set -e
 
 # load .env vars
-cat .env | while read a; do export $a; done
-
-# prepare example submission
-mkdir -p submission
-cd inference; zip -r ../submission/submission.zip ./*; cd ..
-
+if [ -f .env ]; then
+    cat .env | while read a; do export $a; done
+fi
 
 # test configuration
 if [ $(which nvidia-smi) ]
