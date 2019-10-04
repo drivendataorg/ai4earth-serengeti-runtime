@@ -1,7 +1,7 @@
 #!/bin/bash
-set -e
 
 processor="gpu"
+exit_code=0
 
 {
     cd /inference
@@ -16,7 +16,7 @@ processor="gpu"
     fi
 
     echo "Unpacking submission..."
-    unzip ./submission/submission.zip -d .
+    unzip ./submission/submission.zip -d ./
 
     if [ -f "main.py" ]
     then
@@ -30,7 +30,7 @@ processor="gpu"
         R -f main.R
     else
         echo "ERROR: Could not find main.py or main.R in submission.zip"
-        exit 1
+        exit_code = 1
     fi
 
     echo "Exporting submission.csv result..."
@@ -42,12 +42,12 @@ processor="gpu"
         cp submission.csv ./submission/submission.csv
     else
         echo "ERROR: Script did not produce a submission.csv file in the main directory."
-        exit 1
+        exit_code = 1
     fi
 
     echo "Completed execution."
-    exit 0
 } |& tee "/inference/submission/log.txt"
 
 # copy for additional log uses
 cp /inference/submission/log.txt /tmp/log
+exit $exit_code

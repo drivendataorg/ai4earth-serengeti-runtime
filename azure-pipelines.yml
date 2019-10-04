@@ -17,8 +17,9 @@ jobs:
   cancelTimeoutInMinutes: 90
   steps:
   - script: |
-      docker build -t $(dockerId).azurecr.io/$(imageName) .
+      docker build -t $(dockerId).azurecr.io/$(imageName):$GIT_COMMIT .
       docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
-      docker push $(dockerId).azurecr.io/$(imageName)
+      docker push $(dockerId).azurecr.io/$(imageName):$GIT_COMMIT
     env:
-      pswd: $(dockerPassword)        
+      pswd: $(dockerPassword)
+      GIT_COMMIT: $(Build.SourceVersion)
