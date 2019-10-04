@@ -21,6 +21,9 @@ packages = [
     "tensorflow", 
     "torchvision", 
     "xgboost", 
+    ## ADD ADDITIONAL REQUIREMENTS BELOW HERE ##
+
+    ############################################
 ]
 
 for package in packages:
