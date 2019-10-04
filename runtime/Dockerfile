@@ -39,8 +39,8 @@ RUN conda env create -f /envs/py-${CPU_GPU}.yml && \
     conda clean -i -l -t -y
 
 # post-environment installs for R
-COPY ./package_installs*.R /envs/
-RUN /opt/conda/envs/r-${CPU_GPU}/bin/R -f /envs/package_installs_${CPU_GPU}.R
+COPY ./package-installs*.R /envs/
+RUN /opt/conda/envs/r-${CPU_GPU}/bin/R -f /envs/package-installs-${CPU_GPU}.R
 
 # Execute the entrypoint.sh script inside the container when we do docker run
 CMD ["/bin/bash", "/inference/entrypoint.sh"]
