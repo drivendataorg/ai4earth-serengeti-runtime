@@ -6,6 +6,8 @@ if [ -f .env ]; then
     cat .env | while read a; do export $a; done
 fi
 
+cd runtime
+
 # test configuration
 if [ $(which nvidia-smi) ]
 then
