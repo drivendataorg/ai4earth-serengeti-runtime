@@ -15,8 +15,8 @@ RUN apt-get update --fix-missing && \
 RUN groupadd -g 999 appuser && \
     useradd -r -u 1000 -g appuser appuser
 
-RUN mkdir /envs /home/appuser /inference
-RUN chown -R appuser /opt /envs /home/appuser /inference
+RUN mkdir /envs /home/appuser /inference && \
+    chown -R appuser /opt /envs /home/appuser /inference
 
 COPY ./entrypoint.sh /inference/entrypoint.sh
 RUN chmod +x /inference/entrypoint.sh
@@ -32,15 +32,17 @@ RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.5.4-Linux-x86_
 
 ENV PATH /opt/conda/bin:$PATH
 COPY *.yml /envs/
+COPY ./package_installs*.R /envs/
 
 # create environments
-RUN conda env create -f /envs/py-${CPU_GPU}.yml && \
+RUN conda update conda && \
+    conda env create -f /envs/py-${CPU_GPU}.yml && \
+    conda clean -a -y && \
     conda env create -f /envs/r-${CPU_GPU}.yml && \
-    conda clean -i -l -t -y
+    conda clean -a -y && \
+    conda clean -f -y && \
+    /opt/conda/envs/r-${CPU_GPU}/bin/R -f /envs/package-installs-${CPU_GPU}.R
 
-# post-environment installs for R
-COPY ./package-installs*.R /envs/
-RUN /opt/conda/envs/r-${CPU_GPU}/bin/R -f /envs/package-installs-${CPU_GPU}.R
 
 # Execute the entrypoint.sh script inside the container when we do docker run
 CMD ["/bin/bash", "/inference/entrypoint.sh"]
