@@ -22,6 +22,7 @@ jobs:
   steps:
   - script: |
       echo $(Build.SourceVersion)
+      cd runtime
       docker build -t $(dockerId).azurecr.io/$(imageName):$(Build.SourceVersion) .
       docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
       docker push $(dockerId).azurecr.io/$(imageName):$(Build.SourceVersion)

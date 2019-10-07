@@ -32,7 +32,7 @@ RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.5.4-Linux-x86_
 
 ENV PATH /opt/conda/bin:$PATH
 COPY *.yml /envs/
-COPY ./package_installs*.R /envs/
+COPY ./package-installs*.R /envs/
 
 # create environments
 RUN conda update conda && \
