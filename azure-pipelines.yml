@@ -17,9 +17,8 @@ jobs:
   cancelTimeoutInMinutes: 90
   steps:
   - script: |
-      T=$(git rev-parse --short HEAD) echo $T
-      docker build -t $(dockerId).azurecr.io/$(imageName):$T .
+      echo $(Build.SourceVersion)
+      docker build -t $(dockerId).azurecr.io/$(imageName):$(Build.SourceVersion) .
       docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
-      docker push $(dockerId).azurecr.io/$(imageName):$(git rev-parse --short HEAD)
-    env:
-      GIT_COMMIT: $(Build.SourceVersion)
+      docker push $(dockerId).azurecr.io/$(imageName):$(Build.SourceVersion)
+    displayName: 'Build and deploy Docker container'
