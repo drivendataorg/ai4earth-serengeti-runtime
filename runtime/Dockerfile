@@ -21,8 +21,8 @@ RUN mkdir /envs /home/appuser /inference && \
 COPY ./entrypoint.sh /inference/entrypoint.sh
 RUN chmod +x /inference/entrypoint.sh
 
-COPY ./run-tests.sh /inference/run-tests.sh
-RUN chmod +x /inference/entrypoint.sh
+COPY ./run-tests.sh /run-tests.sh
+RUN chmod +x /run-tests.sh
 
 USER appuser
 

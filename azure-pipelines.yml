@@ -3,6 +3,12 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+# specific branch build
+trigger:
+  branches:
+    include:
+    - master
+
 pr:
   autoCancel: true
   branches:
@@ -40,7 +46,7 @@ jobs:
   - script: |
       cd runtime
       docker build --build-arg CPU_GPU=gpu -t $(dockerId)/$(imageName):$(Build.SourceVersion) .
-      docker run $(dockerId)/$(imageName):$(Build.SourceVersion) /bin/bash -c "bash run-tests.sh"
+      docker run $(dockerId)/$(imageName):$(Build.SourceVersion) /bin/bash -c "bash /run-tests.sh"
     displayName: 'Test installs for GPU environment'
 - job: test_cpu_installs
   condition: ne(variables['build.sourceBranch'], 'refs/heads/master')
@@ -55,5 +61,5 @@ jobs:
   - script: |
       cd runtime
       docker build --build-arg CPU_GPU=cpu -t $(dockerId)/$(imageName):$(Build.SourceVersion) .
-      docker run $(dockerId)/$(imageName):$(Build.SourceVersion) /bin/bash -c "bash run-tests.sh"
+      docker run $(dockerId)/$(imageName):$(Build.SourceVersion) /bin/bash -c "bash /run-tests.sh"
     displayName: 'Test installs for CPU environment'
