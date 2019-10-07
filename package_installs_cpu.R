@@ -16,4 +16,3 @@ install.packages("OpenImageR", quiet = T)
 
 install_github("bnosac/image", subdir = "image.ContourDetector", build_vignettes = F, quiet = T)
 install_github("bnosac/image", subdir = "image.darknet", build_vignettes = F, quiet = T)
-install_github("bnosac/image", subdir = "image.OpenPano", build_vignettes = F, quiet = T)
