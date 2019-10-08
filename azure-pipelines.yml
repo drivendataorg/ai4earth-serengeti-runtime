@@ -46,7 +46,10 @@ jobs:
   - script: |
       cd runtime
       docker build --build-arg CPU_GPU=gpu -t $(dockerId)/$(imageName):$(Build.SourceVersion) .
-      docker run $(dockerId)/$(imageName):$(Build.SourceVersion) /bin/bash -c "bash /run-tests.sh gpu"
+      docker run $(dockerId)/$(imageName):$(Build.SourceVersion) \
+                  --mount type=bind,source=$(pwd)/runtime/run-tests.sh,target=/run-tests.sh,readonly \
+                  --mount type=bind,source=$(pwd)/runtime/tests,target=/tests,readonly \
+                  /bin/bash -c "bash /run-tests.sh gpu"
     displayName: 'Test installs for GPU environment'
 - job: test_cpu_installs
   condition: ne(variables['build.sourceBranch'], 'refs/heads/master')
@@ -61,5 +64,8 @@ jobs:
   - script: |
       cd runtime
       docker build --build-arg CPU_GPU=cpu -t $(dockerId)/$(imageName):$(Build.SourceVersion) .
-      docker run $(dockerId)/$(imageName):$(Build.SourceVersion) /bin/bash -c "bash /run-tests.sh cpu"
+      docker run $(dockerId)/$(imageName):$(Build.SourceVersion) \
+                  --mount type=bind,source=$(pwd)/runtime/run-tests.sh,target=/run-tests.sh,readonly \
+                  --mount type=bind,source=$(pwd)/runtime/tests,target=/tests,readonly \
+                  /bin/bash -c "bash /run-tests.sh cpu"
     displayName: 'Test installs for CPU environment'
