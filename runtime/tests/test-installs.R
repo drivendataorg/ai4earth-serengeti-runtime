@@ -48,7 +48,7 @@ packages <- c(
     "tensorflow",
     "magick",
     ## ADD ADDITIONAL REQUIREMENTS BELOW HERE ##
-
+    "foobarnotarealpackage",
     ############################################
     NULL
 )
