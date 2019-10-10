@@ -15,14 +15,14 @@ then
     docker run --env-file .env \
            --gpus all \
            --network none \
-           --mount type=bind,source=$(pwd)/image-files,target=/inference/data,readonly \
+           --mount type=bind,source=$(pwd)/inference-data,target=/inference/data,readonly \
            --mount type=bind,source=$(pwd)/submission,target=/inference/submission \
            ai-for-earth-serengeti/inference
 else
     docker build --build-arg CPU_GPU=cpu -t ai-for-earth-serengeti/inference .
     docker run --env-file .env \
             --network none \
-            --mount type=bind,source=$(pwd)/image-files,target=/inference/data,readonly \
+            --mount type=bind,source=$(pwd)/inference-data,target=/inference/data,readonly \
             --mount type=bind,source=$(pwd)/submission,target=/inference/submission \
             ai-for-earth-serengeti/inference
 fi
