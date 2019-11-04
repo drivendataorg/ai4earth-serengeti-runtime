@@ -30,7 +30,7 @@ exit_code=0
         R -f main.R
     else
         echo "ERROR: Could not find main.py or main.R in submission.zip"
-        exit_code = 1
+        exit_code=1
     fi
 
     echo "Exporting submission.csv result..."
@@ -42,7 +42,7 @@ exit_code=0
         cp submission.csv ./submission/submission.csv
     else
         echo "ERROR: Script did not produce a submission.csv file in the main directory."
-        exit_code = 1
+        exit_code=1
     fi
 
     echo "Completed execution."
