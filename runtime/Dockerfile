@@ -21,7 +21,7 @@ RUN mkdir /envs /home/appuser /inference && \
 COPY ./entrypoint.sh /inference/entrypoint.sh
 RUN chmod +x /inference/entrypoint.sh
 
-USER appuser
+USER 1000
 
 # install miniconda as system python
 RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.5.4-Linux-x86_64.sh -O /opt/miniconda.sh && \
