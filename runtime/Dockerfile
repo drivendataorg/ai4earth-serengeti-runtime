@@ -21,6 +21,8 @@ RUN mkdir /envs /home/appuser /inference && \
 COPY ./entrypoint.sh /inference/entrypoint.sh
 RUN chmod +x /inference/entrypoint.sh
 
+USER 1000
+
 # install miniconda as system python
 RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.5.4-Linux-x86_64.sh -O /opt/miniconda.sh && \
     /bin/bash /opt/miniconda.sh -b -p /opt/conda
@@ -38,7 +40,6 @@ RUN conda update conda && \
     conda clean -f -y && \
     /opt/conda/envs/r-${CPU_GPU}/bin/R -f /envs/package-installs-${CPU_GPU}.R
 
-USER 1000
 
 # Execute the entrypoint.sh script inside the container when we do docker run
 CMD ["/bin/bash", "/inference/entrypoint.sh"]
