@@ -16,18 +16,13 @@ futile.logger::flog.threshold(futile.logger::INFO)
 PIL <- reticulate::import("PIL")
 PIL$ImageFile$LOAD_TRUNCATED_IMAGES <- TRUE
 
-MODEL_PATH <- "inference/assets/my_awesome_model.h5"
+MODEL_PATH <- "assets/my_awesome_model.h5"
 
 # the images will live in a folder called 'data' in the container
-DATA_PATH <- file.path(dirname(getwd()), "data/final/public/")
-TEST_PATH <- "/databig/processed/test_images"
+DATA_PATH <- "data"
+TEST_PATH <- "data"
 
 NUM_LABELS <- 54
-
-### SEQ DROP BLOCK ###
-seq_drop_path <- file.path(dirname(getwd()), "data/interim/seqs_to_drop.csv")
-seqs_to_drop <- data.table::fread(seq_drop_path)[, seq_id]
-######################
 
 #' This is the main function executed at runtime in the cloud environment
 perform_inference <- function() {
@@ -48,14 +43,8 @@ perform_inference <- function() {
         file.path(DATA_PATH, 'submission_format.csv')
     )
 
-    ### SEQ DROP BLOCK ###
-    flog.info(sprintf("Dropping %d sequences.", length(seqs_to_drop)))
-    test_metadata_dt <- test_metadata_dt[!seq_id %in% seqs_to_drop]
-    submission_format_dt <- submission_format_dt[!seq_id %in% seqs_to_drop]
-    ######################
-
     data.table::setkeyv(test_metadata_dt, "seq_id")
-    data.table::setkeyv(test_metadata_dt, "seq_id")
+    data.table::setkeyv(submission_format_dt, "seq_id")
 
     # Check our predictions are in the same order as the submission format
     stopifnot(identical(
@@ -121,7 +110,7 @@ perform_inference <- function() {
     }
 
     # Save out submission
-    submission_path <- "inference/submission.csv"
+    submission_path <- "submission.csv"
     data.table::fwrite(my_submission_dt, submission_path)
     flog.info(sprintf("Submission saved to %s", submission_path))
 }

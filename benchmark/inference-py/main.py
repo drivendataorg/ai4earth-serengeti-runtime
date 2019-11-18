@@ -17,16 +17,11 @@ logging.basicConfig(level=logging.INFO)
 # This must be set to load some imags using PIL, which Keras uses.
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-ASSET_PATH = Path(__file__).resolve().parents[0] / "assets"
+ASSET_PATH = Path(__file__).parents[0] / "assets"
 MODEL_PATH = ASSET_PATH / "my_awesome_model.h5"
 
 # the images will live in a folder called 'data' in the container
-TEST_PATH = Path("/databig/processed/test_images")
-
-
-### SEQ DROP BLOCK ###
-seq_drop_path = Path(__file__).resolve().parents[2] / "data/interim/seqs_to_drop.csv"
-seqs_to_drop = pd.read_csv(str(seq_drop_path), index_col=0, squeeze=True)
+DATA_PATH = Path(__file__).parents[0] / "data"
 
 
 def perform_inference():
@@ -37,24 +32,21 @@ def perform_inference():
     logging.info("Loading and processing metadata.")
 
     # our preprocessing selects the first image for each sequence
-    test_metadata = pd.read_csv(ASSET_PATH / "test_metadata.csv", index_col="seq_id")
+    test_metadata = pd.read_csv(DATA_PATH / "test_metadata.csv", index_col="seq_id")
     test_metadata = (
         test_metadata.sort_values("file_name").groupby("seq_id").first().reset_index()
     )
 
     # prepend the path to our filename since our data lives in a separate folder
     test_metadata["full_path"] = test_metadata.file_name.map(
-        lambda x: str(TEST_PATH / x)
+        lambda x: str(DATA_PATH / x)
     )
-
-    ### SEQ DROP BLOCK ###
-    logging.info(f"Dropping {seqs_to_drop.shape[0]} sequences:")
-    test_metadata = test_metadata.set_index("seq_id").drop(seqs_to_drop).reset_index()
 
     logging.info("Starting inference.")
 
     # Preallocate prediction output
-    num_labels = 54
+    submission_format = pd.read_csv(DATA_PATH / "submission_format.csv", index_col=0)
+    num_labels = submission_format.shape[1]
     output = np.zeros((test_metadata.shape[0], num_labels))
 
     # Instantiate test data generator
@@ -81,12 +73,6 @@ def perform_inference():
     logging.info(f"Inference complete. Took {inference_stop - inference_start}.")
 
     logging.info("Creating submission.")
-
-    # Load the submission format so we can match it exactly
-    submission_format = pd.read_csv(ASSET_PATH / "submission_format.csv", index_col=0)
-
-    ### SEQ DROP BLOCK ###
-    submission_format = submission_format.drop(seqs_to_drop)
 
     # Check our predictions are in the same order as the submission format
     assert np.all(
