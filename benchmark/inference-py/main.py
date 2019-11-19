@@ -14,13 +14,13 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 # We get to see the log output for our execution, so log away!
 logging.basicConfig(level=logging.INFO)
 
-# This must be set to load some imags using PIL, which Keras uses.
+# This must be set to load some images using PIL, which Keras uses.
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 ASSET_PATH = Path(__file__).parents[0] / "assets"
 MODEL_PATH = ASSET_PATH / "my_awesome_model.h5"
 
-# the images will live in a folder called 'data' in the container
+# The images will live in a folder called 'data' in the container
 DATA_PATH = Path(__file__).parents[0] / "data"
 
 
@@ -31,13 +31,13 @@ def perform_inference():
 
     logging.info("Loading and processing metadata.")
 
-    # our preprocessing selects the first image for each sequence
+    # Our preprocessing selects the first image for each sequence
     test_metadata = pd.read_csv(DATA_PATH / "test_metadata.csv", index_col="seq_id")
     test_metadata = (
         test_metadata.sort_values("file_name").groupby("seq_id").first().reset_index()
     )
 
-    # prepend the path to our filename since our data lives in a separate folder
+    # Prepend the path to our filename since our data lives in a separate folder
     test_metadata["full_path"] = test_metadata.file_name.map(
         lambda x: str(DATA_PATH / x)
     )
@@ -82,7 +82,7 @@ def perform_inference():
     output[: preds.shape[0], :] = preds[: output.shape[0], :]
     my_submission = pd.DataFrame(
         np.stack(output),
-        # remember that we are predicting at the sequence, not image level
+        # Remember that we are predicting at the sequence, not image level
         index=test_metadata.seq_id,
         columns=submission_format.columns,
     )

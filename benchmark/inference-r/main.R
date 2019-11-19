@@ -18,7 +18,7 @@ PIL$ImageFile$LOAD_TRUNCATED_IMAGES <- TRUE
 
 MODEL_PATH <- "assets/my_awesome_model.h5"
 
-# the images will live in a folder called 'data' in the container
+# The images will live in a folder called 'data' in the container
 DATA_PATH <- "data"
 TEST_PATH <- "data"
 
@@ -31,11 +31,11 @@ perform_inference <- function() {
 
     flog.info("Loading and processing metadata.")
 
-    # our preprocessing selects the first image for each sequence
+    # Our preprocessing selects the first image for each sequence
     test_metadata_dt <- data.table::fread(file.path(DATA_PATH, "test_metadata.csv"))
     test_metadata_dt <- test_metadata_dt[order(file_name)][, .SD[1], by = "seq_id"]
 
-    # prepend the path to our filename since our data lives in a separate folder
+    # Prepend the path to our filename since our data lives in a separate folder
     test_metadata_dt[, full_path := file.path(TEST_PATH, file_name)]
 
     # Load the submission format so we can match it exactly
@@ -93,7 +93,7 @@ perform_inference <- function() {
         seq_id = test_metadata_dt[, seq_id]
     )
     pred_col_names <- names(submission_format_dt)[2:ncol(submission_format_dt)]
-    # remember that we are predicting at the sequence, not image level
+    # Remember that we are predicting at the sequence, not image level
     data.table::set(
         my_submission_dt,
         j = pred_col_names,
