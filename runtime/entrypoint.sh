@@ -45,7 +45,7 @@ exit_code=0
         exit_code=1
     fi
 
-    echo "Completed execution."
+    echo "================ END ================"
 } |& tee "/inference/submission/log.txt"
 
 # copy for additional log uses
