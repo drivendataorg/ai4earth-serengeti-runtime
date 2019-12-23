@@ -22,7 +22,7 @@ packages = [
     "torchvision", 
     "xgboost", 
     ## ADD ADDITIONAL REQUIREMENTS BELOW HERE ##
-
+    "onnxruntime"
     ############################################
 ]
 
