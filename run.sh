@@ -17,6 +17,7 @@ then
            --network none \
            --mount type=bind,source=$(pwd)/inference-data,target=/inference/data,readonly \
            --mount type=bind,source=$(pwd)/submission,target=/inference/submission \
+           --ipc=host \
            ai-for-earth-serengeti/inference
 else
     docker build --build-arg CPU_GPU=cpu -t ai-for-earth-serengeti/inference .
@@ -24,5 +25,6 @@ else
             --network none \
             --mount type=bind,source=$(pwd)/inference-data,target=/inference/data,readonly \
             --mount type=bind,source=$(pwd)/submission,target=/inference/submission \
+            --ipc=host \
             ai-for-earth-serengeti/inference
 fi
